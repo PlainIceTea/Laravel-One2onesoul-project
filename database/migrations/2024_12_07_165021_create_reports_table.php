@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('content_type', ['thought', 'reply'])->notNullable();
             $table->integer('content_id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');  ;
             $table->text('reason');
             $table->timestamps();
         });

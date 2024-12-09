@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('thought__categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('thought_id');
-            $table->foreign('thought_id')->references('id')->on('thoughts');
+            $table->foreign('thought_id')->references('id')->on('thoughts')->onDelete('cascade');;
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();

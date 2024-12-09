@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->unsignedBigInteger('thought_id');
-            $table->foreign('thought_id')->references('id')->on('thoughts');  
+            $table->foreign('thought_id')->references('id')->on('thoughts')->onDelete('cascade');  
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');  
             $table->boolean('is_anonymous');

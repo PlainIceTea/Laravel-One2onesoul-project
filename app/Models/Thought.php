@@ -39,11 +39,6 @@ class Thought extends Model
 
     }
 
-    public function categories(): HasMany
-    {
-        return $this->hasMany(Category::class);
-
-    }
 
     public function reports(): HasMany
     {
