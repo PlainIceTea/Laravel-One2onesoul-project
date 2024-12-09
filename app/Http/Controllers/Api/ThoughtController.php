@@ -15,7 +15,9 @@ class ThoughtController extends Controller
      */
     public function index()
     {
-        $data = Thought::inRandomOrder()->get();
+        $data = Thought::withCount(['votes' => function ($query) {
+            $query->whereNull('reply_id'); 
+        }])->inRandomOrder()->get();
         return response()->json([
             'status' => true,
             'message' => 'data ditemukan',
@@ -80,21 +82,32 @@ class ThoughtController extends Controller
      */
     public function show(string $slug)
     {
-        $data = Thought::where('slug', $slug)->first();
+        $data = Thought::where('slug', $slug)
+        ->withCount(['votes' => function ($query) {
+            // Menghitung votes untuk Thought yang tidak memiliki reply_id
+            $query->whereNull('reply_id');
+        }])
+        ->with(['replies' => function ($query) {
+            // Menghitung jumlah votes untuk setiap reply
+            $query->withCount('votes');
+        }])
+        ->first();
 
         if ($data) {
+            
             return response()->json([
                 'status' => true,
-                'message' => 'data ditemukan',
+                'message' => 'Data ditemukan',
                 'data' => $data
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'data tidak ditemukan'
-            ]);
+                'message' => 'Data tidak ditemukan'
+            ], 404);
         }
     }
+
 
     /**
      * Update the specified resource in storage.
